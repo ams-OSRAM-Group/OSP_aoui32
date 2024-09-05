@@ -1,0 +1,67 @@
+// aoui32-oled.ino - demo of the UI elements on the OSP32 board, button changes OLED
+/*****************************************************************************
+ * Copyright 2024 by ams OSRAM AG                                            *
+ * All rights are reserved.                                                  *
+ *                                                                           *
+ * IMPORTANT - PLEASE READ CAREFULLY BEFORE COPYING, INSTALLING OR USING     *
+ * THE SOFTWARE.                                                             *
+ *                                                                           *
+ * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS       *
+ * "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT         *
+ * LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS         *
+ * FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT  *
+ * OWNER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,     *
+ * SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT          *
+ * LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE,     *
+ * DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY     *
+ * THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT       *
+ * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE     *
+ * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.      *
+ *****************************************************************************/
+#include <aoui32.h>
+
+/*
+DESCRIPTION
+This demo demonstrates the OLED on the OSp32 board. Button A controls the 
+OLED contents, and buttons X and Y control the green and red signaling LED. 
+This demo also has a splash screen.
+
+HARDWARE
+The demo runs on the OSP32 board (uses the OLED).
+In Arduino select board "ESP32S3 Dev Module".
+
+OUTPUT
+(nothing relevant, look at the OLED and press the 3 buttons on the OSP32 board)
+Welcome to aoui32-oled.ino
+version: ui32 0.3.4
+ui32: init
+*/
+
+
+void setup() {
+  Serial.begin(115200);
+  Serial.printf("\n\nWelcome to aoui32-oled.ino\n");
+  Serial.printf("version: ui32 %s\n", AOUI32_VERSION );
+
+  aoui32_init();
+  Serial.printf("\n");
+
+  aoui32_oled_splash("aoui32-oled.ino", AOUI32_VERSION );
+  delay(3000);
+
+  aoui32_oled_state("AOUI32 demo","green","red");
+}
+
+
+void loop() {
+  aoui32_but_scan();
+
+  if( aoui32_but_wentdown(AOUI32_BUT_A) ) aoui32_oled_msg("Long message: the (A) button is being pressed, please release it again.");
+  if( aoui32_but_wentdown(AOUI32_BUT_X) ) aoui32_led_on( AOUI32_LED_GRN );
+  if( aoui32_but_wentdown(AOUI32_BUT_Y) ) aoui32_led_on( AOUI32_LED_RED );
+
+  if( aoui32_but_wentup  (AOUI32_BUT_A) ) aoui32_oled_state("AOUI32 demo","green","red");
+  if( aoui32_but_wentup  (AOUI32_BUT_X) ) aoui32_led_off( AOUI32_LED_GRN );
+  if( aoui32_but_wentup  (AOUI32_BUT_Y) ) aoui32_led_off( AOUI32_LED_RED );
+}
+
