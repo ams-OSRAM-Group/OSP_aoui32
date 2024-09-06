@@ -1,4 +1,4 @@
-# Library OSP UIDriversOSP32 aoui32
+# OSP UIDriversOSP32 aoui32
 
 Library "OSP UIDriversOSP32 aoui32", usually abbreviated to "aoui32", 
 is one of the **aolibs**; short for Arduino OSP libraries from ams-OSRAM.
@@ -24,7 +24,7 @@ This library drives the following elements.
  - red and green signaling LED
  - 128×32 OLED
 
-The display is intentionally small to only feedback a minimum of information.
+The (OLED) display is intentionally small to only feedback a minimum of information.
 The intention is that the screen shows the "application state":
  - Which app is running (its name);  the A button selects next app.
  - What the X and Y button do in the current app.
@@ -48,14 +48,15 @@ File > Examples > OSP UIDriversOSP32 aoui32 > ...
 - **aoui32_but** ([source](examples/aoui32_but))  
   This demonstrates how to detect button presses and button releases of the
   buttons on the OSP32 board. The library can report the transitions (events
-  like going down or going up), not just the button being down or being up.
+  like button _going_ down or _going_ up), not just the button _being_ down 
+  or _being_ up.
 
 - **aoui32_led** ([source](examples/aoui32_led))  
-  This demo shows the various way the signaling LEDs on the OSP32 board 
-  can be controlled: on/off/toggle, single or both.
+  This demo shows the various ways the signaling LEDs on the OSP32 board 
+  can be controlled: on/off/toggle, changing a single or both LEDs.
 
 - **aoui32_oled** ([source](examples/aoui32_oled))  
-  This demo demonstrates the OLED on the OSp32 board. Button A controls the 
+  This demo demonstrates the OLED on the OSP32 board. Button A controls the 
   OLED contents, and buttons X and Y control the green and red signaling LED. 
   This demo also has a splash screen.
 
@@ -70,13 +71,14 @@ This library contains 3 modules, see figure below (arrows indicate #include).
   functions to check for button (A, X, Y) _transitions_ ("went down").
 
 - **aoui32_led** (`aoui32_led.cpp` and `aoui32_led.h`) is a small module that implements 
-  functions switch one or more signaling LEDs (red, green) on or off (or toggle).
+  functions to switch one or more signaling LEDs (the red and/or the green one) 
+  on or off (or toggle).
 
 - **aoui32_oled** (`aoui32_oled.cpp` and `aoui32_oled.h`) is a small module that implements 
-  some wrapper functions for an OLED display. The wrapper actually uses the 
-  [Tiny OLED library](https://github.com/maarten-pennings/toled/).
-  The _aoui32_ library comes with a [copy](src/toled) of "toled" included, to ensure there
-  are no version issues. That imported library is actually a single module (c/h file),
+  some wrapper functions on top of a library for an OLED display. The wrapper uses the 
+  [Tiny OLED library](https://github.com/maarten-pennings/toled/) (toled).
+  The _aoui32_ library comes with a [copy](src/toled) of toled included, to ensure there
+  are no versioning issues. The included library is a single module (c/h file),
   but it comes with 5 extra files, each implementing a font of some size.
 
 
@@ -110,17 +112,22 @@ The headers contain little documentation; for that see the module source files.
 
 ### aoui32_oled
 
-- `aoui32_oled_state()` to set the three fields (app name, function X button, function Y button).
+- `aoui32_oled_state(name,xlbl,ylbl)` shows a screen with three fields: 
+  app name, function of X button, and function of Y button.
+ 
   ![OLED showing state](extras/state.jpg)
 
-- `aoui32_oled_msg()` full screen for error message in sans5 font.
+- `aoui32_oled_msg(msg)` shows a full screen (error) message in sans5 font.
+ 
   ![OLED showing state](extras/message.jpg)
 
-- `aoui32_oled_splash()` full splash screen with name and version of executable.
+- `aoui32_oled_splash(name,version)` shows a splash screen with name and version 
+  of executable (and the OSP "logo").
+
   ![OLED showing splash](extras/splash.jpg)
 
 - It should be noted that header "aoui32.h" includes "toled.h", so all low level primitives of the
-  OLED driver are also available to an application using library _aoui32_.
+  underlying OLED driver (toled) are also available to an application using library _aoui32_.
 
 
 ## Schematics
@@ -138,34 +145,38 @@ to be of resolution 128×32 pixels, and driven by an SSD1306 controller.
 ### Buttons
 
 The buttons require a regular call to `aoui32_but_scan()`. The module keeps the last two
-scan results, and with that it can determine a `aoui32_but_wentdown()` or `aoui32_but_wentup()`.
-Call scan frequently, say at least every 100ms, but preferably more often, for a smooth UI.
-Do not call it to frequent - more often than every 1ms - or the module will pick up
-on contact bounce.
+scan results (i.e. the button states), and with that it can determine a `aoui32_but_wentdown()` 
+or `aoui32_but_wentup()` transition.
+
+Call `aoui32_but_scan()` frequently, say at least every 100ms, but preferably more often, for a smooth UI.
+To prevent picking up contact bounce, too frequent calls are ignored (see constant `AOUI32_BUT_BOUNCE_MS`).
 
 
 ### OLED
 
 The OLED module keeps a 128×32 pixel monochrome frame buffer in which all draw operations take place.
-The function `aoui32_oled_clear()` erases the frame buffer .
-The function `aoui32_oled_commit()` sends the frame buffer, all 4096 pixels, 
+The function `toled_clear()` erases the frame buffer. 
+The function `toled_commit()` sends the frame buffer, all 4096 pixels (512 bytes), 
 over I2C to the OLED. The OLED has a 1MHz I2C connection, which one might hope 
-results in a transfer time of 128×32/1M = 4096 us. In practice the transfer time is 6000 us.
+results in a transfer time of 128×32/1M = 4096 µs. In practice the transfer time is 6000 µs.
 
-Drawing a near full-screen rectangle on an ESP32S3 takes 45 us (not even 1% of the transfer time), 
-and drawing some text takes 340 us (6% of the transfer time). These figures come from the
+Drawing a near full-screen rectangle on an ESP32S3 takes 45 µs (not even 1% of the transfer time), 
+and drawing some text takes 340 µs (6% of the transfer time). These figures come from the
 [toled](https://github.com/maarten-pennings/toled/blob/main/example/toled-speed/toled-speed.ino)
 library.
 
-|  action    | time (us) | % of transfer |
-|:----------:|:---------:|:-------------:|
-| rectangle  |     45    |           1   |
-| text       |    340    |           6   |
-| transfer   |   6000    |         100   |
-
+| action           | time (µs) | % of transfer |
+|:-----------------|:---------:|:-------------:|
+| draw rectangle   |      45   |           1   |
+| draw text        |     340   |           6   |
+| transfer to OLED |    6000   |         100   |
 
 
 ## Version history _aoui32_
+
+- **2024 sep 6, 0.3.7**
+  - Updated description in two examples.
+  - Updated `readme.md`.
 
 - **2024 sep 5, 0.3.6**  
   - Replaced OSP32 photo.

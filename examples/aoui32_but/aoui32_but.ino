@@ -24,7 +24,8 @@
 DESCRIPTION
 This demonstrates how to detect button presses and button releases of the
 buttons on the OSP32 board. The library can report the transitions (events
-like going down or going up), not just the button being down or being up.
+like button _going_ down or _going_ up), not just the button _being_ down 
+or _being_ up.
 
 HARDWARE
 The demo runs on the OSP32 board (uses the A, X, and Y buttons).

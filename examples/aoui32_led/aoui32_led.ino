@@ -22,8 +22,8 @@
 
 /*
 DESCRIPTION
-This demo shows the various way the signaling LEDs on the OSP32 board 
-can be controlled: on/off/toggle, single or both.
+This demo shows the various ways the signaling LEDs on the OSP32 board 
+can be controlled: on/off/toggle, changing a single or both LEDs.
 
 HARDWARE
 The demo runs on the OSP32 board (uses the red/error, green/ok LEDs).
