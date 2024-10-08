@@ -29,10 +29,17 @@ HARDWARE
 The demo runs on the OSP32 board (uses the red/error, green/ok LEDs).
 In Arduino select board "ESP32S3 Dev Module".
 
+BEHAVIOR
+Animation on the red/error and green/ok LED of the OSP32 board.
+- 10 seconds green blinks (red off)
+- 10 seconds green blinks (red on)
+- 10 seconds green and red blink (in sync)
+- 10 seconds green and red blink (alternating)
+Then repeats
+
 OUTPUT
-(nothing relevant, look at the red and green led on OSP32 board)
 Welcome to aoui32_led.ino
-version: ui32 0.3.4
+version: ui32 0.3.7
 ui32: init
 */
 
@@ -61,13 +68,13 @@ void loop() {
     aoui32_led_off( AOUI32_LED_GRN ); delay(250);
   }
 
-  // green and red blink
+  // green and red blink (in sync)
   for( int i=0; i<10; i++ ) {
     aoui32_led_on ( AOUI32_LED_GRN | AOUI32_LED_RED ); delay(250);
     aoui32_led_off( AOUI32_LED_GRN | AOUI32_LED_RED ); delay(250);
   }
 
-  // green and red blink - using toggle - alternate
+  // green and red blink  (alternating) - using toggle
   aoui32_led_on( AOUI32_LED_RED );
   for( int i=0; i<10; i++ ) {
     aoui32_led_toggle ( AOUI32_LED_GRN | AOUI32_LED_RED ); delay(250);

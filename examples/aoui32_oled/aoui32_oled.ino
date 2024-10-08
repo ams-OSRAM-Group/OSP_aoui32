@@ -30,10 +30,16 @@ HARDWARE
 The demo runs on the OSP32 board (uses the OLED).
 In Arduino select board "ESP32S3 Dev Module".
 
+BEHAVIOR
+When app starts, it shows a splash screen with "aoui32-oled.ino" and its 
+version number (0.3.7). When app is running, it shows app name "AOUI32 demo" 
+and the labels for the X ("green") and Y ("red") button.
+While X is pressed the green/ok LED is on, while Y is pressed the red/err
+LED is on. While A is pressed the OLED shows a long message.
+
 OUTPUT
-(nothing relevant, look at the OLED and press the 3 buttons on the OSP32 board)
 Welcome to aoui32-oled.ino
-version: ui32 0.3.4
+version: ui32 0.3.7
 ui32: init
 */
 

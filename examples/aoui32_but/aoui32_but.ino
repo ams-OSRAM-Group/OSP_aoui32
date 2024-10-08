@@ -31,9 +31,13 @@ HARDWARE
 The demo runs on the OSP32 board (uses the A, X, and Y buttons).
 In Arduino select board "ESP32S3 Dev Module".
 
+BEHAVIOR
+Press the A, X and Y button, and the event is printed over Serial.
+Also try press/release one button while an other is pressed down.
+
 OUTPUT
-Welcome to aoui32-but.ino
-version: ui32 0.1.2
+Welcome to aoui32_but.ino
+version: ui32 0.3.7
 ui32: init
 
 0 [A

@@ -5,7 +5,7 @@ is one of the **aolibs**; short for Arduino OSP libraries from ams-OSRAM.
 This suite implements support for chips that use the Open System Protocol, 
 like the AS1163 ("SAID") or the OSIRE E3731i ("RGBi").
 The landing page for the _aolibs_ is on 
-[GitHub](https://github.com/ams-OSRAM-Group/OSP_aotop).
+[GitHub](https://github.com/ams-OSRAM/OSP_aotop).
 
 
 ## Introduction
@@ -63,9 +63,9 @@ File > Examples > OSP UIDriversOSP32 aoui32 > ...
 
 ## Module architecture
 
-This library contains 3 modules, see figure below (arrows indicate #include).
+This library contains three modules, see figure below (arrows indicate `#include`).
 
-![Modules](extras/modules.drawio.png)
+![Modules](extras/aoui32-modules.drawio.png)
 
 - **aoui32_but** (`aoui32_but.cpp` and `aoui32_but.h`) is a small module that implements 
   functions to check for button (A, X, Y) _transitions_ ("went down").
@@ -174,11 +174,16 @@ library.
 
 ## Version history _aoui32_
 
-- **2024 sep 6, 0.3.7**
+- **2024 October 8, 0.3.8**
+  - Prefixed `modules.drawio.png` with library short name.
+  - Moved domain from `github.com/ams-OSRAM-Group` to `github.com/ams-OSRAM`.
+  - BEHAVIOR added to examples.
+  
+- **2024 September 6, 0.3.7**
   - Updated description in two examples.
   - Updated `readme.md`.
 
-- **2024 sep 5, 0.3.6**  
+- **2024 September 5, 0.3.6**  
   - Replaced OSP32 photo.
   - API section in readme now shows parameter names.
   - Added links in `readme.md` for all example sketches.
@@ -188,7 +193,7 @@ library.
   - Renamed dir `extra` to `extras`.
   - `license.txt`, `examples\xxx.ino` line endings changed from LF to CR+LF.
 
-- **2024 Jul 02, 0.3.5**  
+- **2024 July 02, 0.3.5**  
   - Initial release candidate.
 
 
